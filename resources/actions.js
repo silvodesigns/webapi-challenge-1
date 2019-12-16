@@ -63,6 +63,19 @@ router.put('/:id', (req, res) => {
             }       
 });
 
+router.delete('/:id', (req, res) => {
+    db.remove(req.params.id)
+    .then(action => {
+        res.status(200);
+        res.json({"message": "The action with specified ID was successfully deleted"})
+    })
+    .catch( () =>{
+        res.status(500);
+        res.json({"errorMessage": "The action with specified ID could not be deleted"})
+    })
+})
+
+
 
 
 
