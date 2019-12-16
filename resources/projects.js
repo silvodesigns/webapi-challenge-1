@@ -1,11 +1,13 @@
+// this file will only be used when the route begins with "/projects"
+
 const express = require('express');
 const db = require('../data/helpers/projectModel');
-
 const router = express.Router(); 
 
-// this file will only be used when the route begins with "/projects"
+//middleware that parses request body if it is json  when making post requests
+router.use(express.json());
+
 router.get('/', (req, res) => {
-//   res.status(200).send('hello from the GET /projects endpoint');
      db.get()
      .then(projects => {
          res.status(200);
@@ -18,12 +20,38 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  res.status(200).send('hello from the GET /projects/:id endpoint');
+    //req.params.id holds the value of the project id sent on URL
+    db.get(req.params.id)
+    .then(project => {
+        res.status(200);
+        res.json(project);
+    })
+    .catch(()=> {
+        res.status(404);
+        res.json({"message": "the project you were trying to find does not exist"})
+    })
 });
 
 router.post('/', (req, res) => {
-  res.status(200).send('hello from the POST /projects endpoint');
+
+    const {name, description } = req.body;
+
+    if(!name || !description){
+        res.status(400).json({errorMessage: "Please provide a name and description for the project"})
+    } else {
+
+                db.insert(req.body)
+                .then(project => {
+                    res.status(201);
+                    res.json(project);
+                })
+                .catch(()=> {
+                    res.status(500);
+                    res.json({"message": "Could post the project error"})
+                })
+            }       
 });
+
 
 // after the route has been fully configured, then we export it so it can be required where needed
 module.exports = router; 
