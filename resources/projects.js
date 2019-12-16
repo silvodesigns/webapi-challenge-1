@@ -4,7 +4,7 @@ const express = require('express');
 const db = require('../data/helpers/projectModel');
 const router = express.Router(); 
 
-//middleware that parses request body if it is json  when making post requests
+//middleware that parses request body if it is json when making post requests
 router.use(express.json());
 
 router.get('/', (req, res) => {
@@ -52,6 +52,26 @@ router.post('/', (req, res) => {
             }       
 });
 
+
+router.put('/:id', (req, res) => {
+
+    const {name, description } = req.body;
+
+    if(!name || !description){
+        res.status(400).json({errorMessage: "Please provide a name and description for the project"})
+    } else {
+
+                db.update(req.params.id,req.body)
+                .then(project => {
+                    res.status(201);
+                    res.json(project);
+                })
+                .catch(()=> {
+                    res.status(500);
+                    res.json({"message": "Could not update the project with specified ID"})
+                })
+            }       
+});
 
 // after the route has been fully configured, then we export it so it can be required where needed
 module.exports = router; 
