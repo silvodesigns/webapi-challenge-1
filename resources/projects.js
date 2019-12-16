@@ -73,5 +73,17 @@ router.put('/:id', (req, res) => {
             }       
 });
 
+router.delete('/:id', (req, res) => {
+    db.remove(req.params.id)
+    .then(project => {
+        res.status(200);
+        res.json({"message": "The project with specified ID was successfully deleted"})
+    })
+    .catch( () =>{
+        res.status(500);
+        res.json({"errorMessage": "The projecy with specified ID could not be deleted"})
+    })
+})
+
 // after the route has been fully configured, then we export it so it can be required where needed
 module.exports = router; 
