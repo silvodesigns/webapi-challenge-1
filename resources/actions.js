@@ -2,7 +2,7 @@
 
 const express = require('express');
 const db = require('../data/helpers/actionModel');
-const actions = require('../data/helpers/projectModel');
+const db_projects = require('../data/helpers/projectModel');
 
 const router = express.Router(); 
 
@@ -11,7 +11,7 @@ const router = express.Router();
 router.use(express.json());
 
 router.get('/:id', (req, res) => {
-    actions.getProjectActions(req.params.id)
+    db_projects.getProjectActions(req.params.id)
     .then(actions => {
         res.status(200);
         res.json(actions);
@@ -29,16 +29,27 @@ router.post('/', (req, res) => {
     if(!project_id || !description || !notes){
         res.status(400).json({errorMessage: "Please provide  a description , note and id for the action"})
     } else {
+                db_projects.get(project_id)
+                .then(projects => {
+                    if(projects){
+                            db.insert(req.body)
+                            .then(action => {
+                                res.status(201);
+                                res.json(action);
+                            })
+                            .catch(()=> {
+                                res.status(500);
+                                res.json({"message": "Could not post the action error"})
+                            })
+                        } else {
 
-                db.insert(req.body)
-                .then(action => {
-                    res.status(201);
-                    res.json(action);
+                            res.status(500);
+                            res.json({"message": "The project with this ID does not exist so action could not be created"})
+
+                        }
                 })
-                .catch(()=> {
-                    res.status(500);
-                    res.json({"message": "Could post the action error"})
-                })
+            
+               
             }       
 });
 
