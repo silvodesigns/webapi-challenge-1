@@ -22,6 +22,27 @@ router.get('/:id', (req, res) => {
     })
 });
 
+router.post('/', (req, res) => {
+
+    const {project_id , notes, description } = req.body;
+
+    if(!project_id|| !description || !notes){
+        res.status(400).json({errorMessage: "Please provide  a description , note and id for the action"})
+    } else {
+
+                db.insert(req.body)
+                .then(action => {
+                    res.status(201);
+                    res.json(action);
+                })
+                .catch(()=> {
+                    res.status(500);
+                    res.json({"message": "Could post the action error"})
+                })
+            }       
+});
+
+
 
 
 
