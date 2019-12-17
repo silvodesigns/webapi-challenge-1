@@ -1,17 +1,21 @@
 // this file will only be used when the route begins with "/actions"
 
 const express = require('express');
-const db = require('../data/helpers/actionModel');
-const db_projects = require('../data/helpers/projectModel');
 
-const router = express.Router(); 
+const action_db = require('../data/helpers/actionModel');
+const project_db = require('../data/helpers/projectModel');
+
+const router = express.Router({
+    mergeParams: true,
+}); 
 
 
 //middleware that parses request body if it is json when making post requests
 router.use(express.json());
 
-router.get('/:id', (req, res) => {
-    db_projects.getProjectActions(req.params.id)
+
+router.get('/', (req, res) => {
+    project_db.getProjectActions(req.params.id)
     .then(actions => {
         res.status(200);
         res.json(actions);
@@ -22,17 +26,30 @@ router.get('/:id', (req, res) => {
     })
 });
 
+router.get('/:id', (req, res) => {
+    action_db.get(req.params.id)
+    .then(action => {
+        res.status(200);
+        res.json(action);
+    })
+    .catch(()=> {
+        res.status(404);
+        res.json({"message": "the action with the specified project does not exist"})
+    })
+});
+
+
 router.post('/', (req, res) => {
 
-    const {project_id , notes, description } = req.body;
+    const { notes, description } = req.body;
 
-    if(!project_id || !description || !notes){
+    if(!description || !notes){
         res.status(400).json({errorMessage: "Please provide  a description , note and id for the action"})
     } else {
-                db_projects.get(project_id)
-                .then(projects => {
-                    if(projects){
-                            db.insert(req.body)
+                project_db.get(req.params.id)
+                .then(project => {
+                    if(project){
+                            action_db.insert({...req.body, project_id : req.params.id})
                             .then(action => {
                                 res.status(201);
                                 res.json(action);
@@ -56,13 +73,13 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
 
-    const {project_id , notes, description } = req.body;
+    const {project_id, notes, description } = req.body;
 
-    if(!project_id || !description || !notes){
+    if(!project_id ||!description || !notes){
         res.status(400).json({errorMessage: "Please provide a name and description for the action to update"})
     } else {
 
-                db.update(req.params.id,req.body)
+                action_db.update(req.params.id,{...req.body})
                 .then(action => {
                     res.status(201);
                     res.json(action);
@@ -75,7 +92,7 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-    db.remove(req.params.id)
+   action_db.remove(req.params.id)
     .then(action => {
         res.status(200);
         res.json({"message": "The action with specified ID was successfully deleted"})
