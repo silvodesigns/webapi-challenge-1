@@ -17,8 +17,8 @@ const express = require('express');
 
 const server = express();
 
-server.get('/', (res, req) => {
-    res.setEncoding('Hello from Express Sprint');
+server.get('/', (req, res) => {
+    res.send("Hello from Express Sprint");
 })
 
 server.listen(5000, () =>{
