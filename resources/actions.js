@@ -19,5 +19,17 @@ router.get('/', (req, res) => {
     })
 });
 
+router.get('/:id', (req, res) => {
+    action_db.get(req.params.id)
+    .then(action => {
+        res.status(200);
+        res.json(action);
+    })
+    .catch(()=> {
+        res.status(404);
+        res.json({"message": "the action with the specified project does not exist"})
+    })
+});
+
 
 module.exports = router
