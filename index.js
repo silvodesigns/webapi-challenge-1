@@ -12,3 +12,15 @@ I need this code, just don't know where, perhaps should make some middleware, do
 
 Go code!
 */
+
+const express = require('express');
+
+const server = express();
+
+server.get('/', (res, req) => {
+    res.setEncoding('Hello from Express Sprint');
+})
+
+server.listen(5000, () =>{
+    console.log("API is now running on port 5000");
+})
