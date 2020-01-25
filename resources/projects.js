@@ -1,6 +1,7 @@
 const express = require('express');
 
-const project_db= require('../data/helpers/projectModel');
+const project_db = require('../data/helpers/projectModel');
+
 const router = express.Router();
 router.use(express.json());
 
