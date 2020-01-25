@@ -48,5 +48,37 @@ router.post('/', (req, res) => {
             }       
 });
 
+router.put('/:id', (req, res) => {
+
+    const {name, description } = req.body;
+
+    if(!name || !description){
+        res.status(400).json({errorMessage: "Please provide a name and description for the project"})
+    } else {
+
+                project_db.update(req.params.id,req.body)
+                .then(project => {
+                    res.status(201);
+                    res.json(project);
+                })
+                .catch(()=> {
+                    res.status(500);
+                    res.json({"message": "Could not update the project with specified ID"})
+                })
+            }       
+});
+
+router.delete('/:id', (req, res) => {
+    project_db.remove(req.params.id)
+    .then(project => {
+        res.status(200);
+        res.json({"message": "The project with specified ID was successfully deleted"})
+    })
+    .catch( () =>{
+        res.status(500);
+        res.json({"errorMessage": "The projecy with specified ID could not be deleted"})
+    })
+})
+
 
 module.exports = router;
