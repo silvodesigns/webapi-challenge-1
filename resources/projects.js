@@ -1,9 +1,11 @@
 const express = require('express');
-
+const actionRoutes = require('./actions.js');
 const project_db = require('../data/helpers/projectModel');
 
 const router = express.Router();
+
 router.use(express.json());
+router.use('/:id/actions',actionRoutes);
 
 
 router.get('/', (req, res) => {

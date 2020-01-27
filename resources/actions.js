@@ -3,6 +3,11 @@ const express = require('express');
 const action_db = require('../data/helpers/actionModel');
 const project_db = require('../data/helpers/projectModel');
 
+const router = express.Router({
+    mergeParams: true,
+}); 
+
+
 //middleware that parses request body if it is json when making post requests
 router.use(express.json());
 
@@ -36,7 +41,7 @@ router.post('/', (req, res) => {
     const { notes, description } = req.body;
 
     if(!description || !notes){
-        res.status(400).json({errorMessage: "Please provide  a description , note and id for the action"})
+        res.status(400).json({errorMessage: "Please provide  a description , note for the action"})
     } else {
                 project_db.get(req.params.id)
                 .then(project => {
@@ -67,8 +72,9 @@ router.put('/:id', (req, res) => {
 
     const {project_id, notes, description } = req.body;
 
-    if(!project_id ||!description || !notes){
-        res.status(400).json({errorMessage: "Please provide a name and description for the action to update"})
+    if(!project_id){
+        res.status(400).json({errorMessage: "Please provide  project id  to update"})
+        console.log(req.params.id);
     } else {
 
                 action_db.update(req.params.id,{...req.body})
