@@ -37,14 +37,22 @@ Commit your code regularly and use descriptive messages. This helps both you (in
 ## Self-Study/Essay Questions
 
 Demonstrate your understanding of this Sprint's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your Team Lead.
-
 - [ ] Mention two parts of Express that you learned about this week.
+
+    ```I learned about Nodemon and Middlewares```
 
 - [ ] Describe Middleware?
 
+    ``` Middlewares are helper functions that allow us to add more feature  and functionalities to expresss```
+
 - [ ] Describe a Resource?
 
+    ```Resources are the different databases that we have available to work with withing our application and the the client interacts with via different endpoints```
+
+
 - [ ] What can the API return to help clients know if a request was successful?
+
+    ```The API can return status codes such as 200 and 400 as well as personalized error messages```
 
 - [ ] How can we partition our application into sub-applications?
 
