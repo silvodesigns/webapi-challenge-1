@@ -40,13 +40,24 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
+    ```I learned about Routes and Middlewares```
+
 - [ ] Describe Middleware?
+
+    ``` Middlewares are helper functions that allow us to add more feature  and functionalities to expresss```
 
 - [ ] Describe a Resource?
 
+    ```Resources are the different databases that we have available to work with withing our application and the the client interacts with via different endpoints```
+
+
 - [ ] What can the API return to help clients know if a request was successful?
 
+    ```The API can return status codes such as 200 and 400 as well as personalized error messages```
+
 - [ ] How can we partition our application into sub-applications?
+
+    ```Using mini servers inside of our application and using Routes```
 
 ## Minimum Viable Product
 
